@@ -1837,6 +1837,11 @@ static struct l2cap_chan *l2cap_global_chan_by_psm(int state, __le16 psm,
 
 				read_unlock(&chan_list_lock);
 				return c;
+				c = l2cap_chan_hold_unless_zero(c);
+				if (c) {
+					read_unlock(&chan_list_lock);
+					return c;
+				}
 			}
 
 			/* Closest match */
